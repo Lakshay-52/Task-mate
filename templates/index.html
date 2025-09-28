@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2 class="mb-3">My Tasks</h2>
+
+<!-- Progress Bar -->
+<div class="progress mb-4">
+  <div class="progress-bar" role="progressbar" style="width: {{ progress }}%;" 
+       aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">
+    {{ progress }}%
+  </div>
+</div>
+
+<!-- Add Task Form -->
+<form action="/add" method="post" class="row g-3 mb-4">
+  <div class="col-md-4">
+    <input type="text" name="title" class="form-control" placeholder="Task Title" required>
+  </div>
+  <div class="col-md-3">
+    <input type="date" name="deadline" class="form-control" required>
+  </div>
+  <div class="col-md-3">
+    <select name="priority" class="form-select" required>
+      <option value="High">🔥 High</option>
+      <option value="Medium">⚡ Medium</option>
+      <option value="Low">✅ Low</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-success w-100">Add</button>
+  </div>
+</form>
+
+<!-- Task List -->
+<table class="table table-bordered align-middle">
+  <thead class="table-light">
+    <tr>
+      <th>Title</th>
+      <th>Status</th>
+      <th>Deadline</th>
+      <th>Priority</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in tasks %}
+    <tr class="{% if task[3] < today and task[2] == 'Pending' %}table-danger{% endif %}">
+      <td>{{ task[1] }}</td>
+      <td>
+        {% if task[2] == "Completed" %}
+          <span class="badge bg-success">Completed</span>
+        {% else %}
+          <span class="badge bg-warning text-dark">Pending</span>
+        {% endif %}
+      </td>
+      <td>{{ task[3] }}</td>
+      <td>{{ task[4] }}</td>
+      <td>
+        {% if task[2] == "Pending" %}
+          <a href="/complete/{{ task[0] }}" class="btn btn-sm btn-success">✔ Complete</a>
+        {% endif %}
+        <a href="/edit/{{ task[0] }}" class="btn btn-sm btn-primary">✏ Edit</a>
+        <a href="/delete/{{ task[0] }}" class="btn btn-sm btn-danger">🗑 Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

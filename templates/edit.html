@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Edit Task</h2>
+
+<form action="/update/{{ task[0] }}" method="post" class="row g-3">
+  <div class="col-md-4">
+    <input type="text" name="title" class="form-control" value="{{ task[1] }}" required>
+  </div>
+  <div class="col-md-3">
+    <input type="date" name="deadline" class="form-control" value="{{ task[3] }}" required>
+  </div>
+  <div class="col-md-3">
+    <select name="priority" class="form-select" required>
+      <option value="High" {% if task[4] == "High" %}selected{% endif %}>🔥 High</option>
+      <option value="Medium" {% if task[4] == "Medium" %}selected{% endif %}>⚡ Medium</option>
+      <option value="Low" {% if task[4] == "Low" %}selected{% endif %}>✅ Low</option>
+    </select>
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">Update</button>
+  </div>
+</form>
+
+{% endblock %}
